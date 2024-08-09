@@ -20,5 +20,5 @@ Both servers are only accessible on the local computer!
 `* )
 
 ### Benefits:
-1. solution in local sandbox
+1. local solution in local sandbox (no VPN or external proxy)
 2. you can control which domains traffic has to be modified

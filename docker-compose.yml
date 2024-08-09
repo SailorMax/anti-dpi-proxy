@@ -1,0 +1,14 @@
+services:
+  app:
+    image: tazihad/byedpi
+    ports:
+      - 127.0.0.1:1080:1080
+    command: ['--disorder', '1', '--fake', '0', '--ttl', '1', '--auto=torst', '--tlsrec', '1+s', '--debug', '1']
+
+  pac-server:
+    image: busybox:stable-musl
+    volumes:
+      - ./static:/var/www/static:ro
+    ports:
+      - 127.0.0.1:1081:3000
+    command: ['/bin/httpd', '-f', '-v', '-p', '3000', '-h', '/var/www/static', '-u', 'www-data']

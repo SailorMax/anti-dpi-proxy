@@ -1,0 +1,3 @@
+# config files
+/static/*
+!/static/proxy_chooser.js

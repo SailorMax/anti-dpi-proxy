@@ -8,7 +8,7 @@ RUN apk add make gcc musl-dev \
 
 FROM busybox:stable-musl
 WORKDIR /
-COPY --from=builder /lib/ld-musl-x86_64.so.1 /lib/ld-musl-x86_64.so.1
+COPY --from=builder /lib/ld-musl-* /lib/
 COPY --from=builder /app/byedpi-main/ciadpi .
 
 ENTRYPOINT ["./ciadpi"]

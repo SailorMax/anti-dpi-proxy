@@ -6,6 +6,7 @@ var domains2proxy = [
     "ytimg.com",
     "rutracker.org",
     "rutracker.cc",
+    "medium.com",
 ];
 
 var sDomains4SockProxy = domains2proxy.map(function(v) { return v+'|*.'+v; }).join('|');

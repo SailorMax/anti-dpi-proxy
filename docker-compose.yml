@@ -7,15 +7,15 @@ services:
       - 127.0.0.1:8082:3000
     command: ['/bin/httpd', '-f', '-v', '-p', '3000', '-h', '/var/www/static', '-u', 'www-data']
 
-  sock5-proxy:
-    # image: tazihad/byedpi
-    build: ./bye_dpi/
+  http-proxy:
+    build: ./spoof_dpi/
     ports:
-      - 127.0.0.1:1080:1080
-    command: ['--disorder', '1', '--fake', '0', '--ttl', '1', '--auto=torst', '--tlsrec', '1+s', '--debug', '1']
+      - 127.0.0.1:8888:8080
+    command: ['-debug', '-addr', '0.0.0.0', '-dns-addr', '208.67.222.222', '-window-size', '0']  # '-enable-doh',
 
-  # http-proxy:
-  #   build: ./spoof_dpi/
+  # sock5-proxy:
+  #   # image: tazihad/byedpi
+  #   build: ./bye_dpi/
   #   ports:
-  #     - 127.0.0.1:8888:8080
-  #   command: ['-debug', '-addr', '0.0.0.0']
+  #     - 127.0.0.1:1080:1080
+  #   command: ['--disorder', '1', '--fake', '0', '--ttl', '1', '--auto=torst', '--tlsrec', '1+s', '--debug', '1']

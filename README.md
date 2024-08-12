@@ -1,9 +1,9 @@
-Anti DPI ([Deep packet inspection](https://en.wikipedia.org/wiki/Deep_packet_inspection)) proxy for custom domains list. Based on [Bypass DPI](https://github.com/hufrea/byedpi) and [Spoof DPI](https://github.com/xvzc/SpoofDPI) in Docker containers
+Anti DPI ([Deep packet inspection](https://en.wikipedia.org/wiki/Deep_packet_inspection)) proxy for custom domains list. Based on [Spoof DPI](https://github.com/xvzc/SpoofDPI) and [Bypass DPI](https://github.com/hufrea/byedpi) in Docker containers
 
 The solution uses [PAC](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file)-file to control proxy domains and make up docker containers:
 1. http-server (port 8082) for access to config(PAC) file via http-protocol (Windows [doesn't support](https://learn.microsoft.com/en-us/previous-versions/troubleshoot/browsers/administration/cannot-read-pac-file) local files)
-2. sock5-proxy-server (port 1080) based on [Bypass DPI](https://github.com/hufrea/byedpi)-solution
-3. (optional) http-proxy-server (port 8888) based on [Spoof DPI](https://github.com/xvzc/SpoofDPI)-solution
+2. http-proxy-server (port 8888) based on [Spoof DPI](https://github.com/xvzc/SpoofDPI)-solution
+3. (optional) sock5-proxy-server (port 1080) based on [Bypass DPI](https://github.com/hufrea/byedpi)-solution
 
 All servers are only accessible on the local computer!
 
@@ -25,6 +25,5 @@ All servers are only accessible on the local computer!
 
 
 ### If it doesn't work:
-1. try to uncomment "http-proxy" block in `docker-compose.yml` and switch "SOCK"-string to "PROXY"-string in PAC-file
-2. try to find better arguments for "Bypass DPI". Details in `readme.txt` of https://github.com/hufrea/byedpi
-
+1. try to uncomment "sock5-proxy" block in `docker-compose.yml` and switch "PROXY"-string to "SOCKS"-string in PAC-file
+2. try to find better arguments for "Bypass DPI". Details: https://github.com/hufrea/byedpi/blob/main/readme.txt

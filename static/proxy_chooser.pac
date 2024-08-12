@@ -4,6 +4,8 @@ var domains2proxy = [
     "youtu.be",
     "youtubei.googleapis.com",
     "ytimg.com",
+    "rutracker.org",
+    "rutracker.cc",
 ];
 
 var sDomains4SockProxy = domains2proxy.map(function(v) { return v+'|*.'+v; }).join('|');
@@ -13,8 +15,8 @@ function FindProxyForURL(url, host)
 {
     // use proxy for specific domains
     if (shExpMatch(host, sDomains4SockProxy))
-		return "SOCKS 127.0.0.1:1080";
-        // return "PROXY 127.0.0.1:8888";
+        return "PROXY 127.0.0.1:8888";
+		// return "SOCKS 127.0.0.1:1080";
 
     // by default use no proxy
     return "DIRECT";

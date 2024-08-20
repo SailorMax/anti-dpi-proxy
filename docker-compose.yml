@@ -4,8 +4,8 @@ services:
     volumes:
       - ./static:/var/www/static:ro
     ports:
-      - 127.0.0.1:8082:3000
-    command: ['/bin/httpd', '-f', '-v', '-p', '3000', '-h', '/var/www/static', '-u', 'www-data']
+      - 127.0.0.1:8082:8082
+    command: ['/bin/httpd', '-f', '-vv', '-p', '8082', '-h', '/var/www/static', '-u', 'www-data']
 
   http-proxy:
     build: ./spoof_dpi/

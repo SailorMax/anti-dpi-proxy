@@ -10,8 +10,8 @@ services:
   http-proxy:
     build: ./spoof_dpi/
     ports:
-      - 127.0.0.1:8888:8080
-    command: ['-debug', '-addr', '0.0.0.0', '-dns-addr', '208.67.222.222', '-window-size', '0']  # '-enable-doh',
+      - 127.0.0.1:8888:8888
+    command: ['-debug', '-addr', '0.0.0.0', '-port', '8888', '-window-size', '0', '-dns-addr', '9.9.9.11', '-enable-doh']
 
   # sock5-proxy:
   #   # image: tazihad/byedpi

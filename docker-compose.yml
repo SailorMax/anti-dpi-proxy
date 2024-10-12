@@ -7,15 +7,21 @@ services:
       - 127.0.0.1:8082:8082
     command: ['/bin/httpd', '-f', '-vv', '-p', '8082', '-h', '/var/www/static', '-u', 'www-data']
 
-  http-proxy:
-    build: ./spoof_dpi/
-    ports:
-      - 127.0.0.1:8888:8888
-    command: ['-debug', '-addr', '0.0.0.0', '-port', '8888', '-window-size', '0', '-dns-addr', '9.9.9.11', '-enable-doh']
-
-  # sock5-proxy:
-  #   # image: tazihad/byedpi
-  #   build: ./bye_dpi/
+  # http-proxy:
+  #   build: ./spoof_dpi/
   #   ports:
-  #     - 127.0.0.1:1080:1080
-  #   command: ['--disorder', '1', '--fake', '0', '--ttl', '1', '--auto=torst', '--tlsrec', '1+s', '--debug', '1']
+  #     - 127.0.0.1:8888:8888
+  #   command: ['-debug', '-addr', '0.0.0.0', '-port', '8888', '-window-size', '1', '-dns-addr', '9.9.9.11', '-enable-doh']
+
+  sock5-proxy:
+    # image: tazihad/byedpi
+    build: ./bye_dpi/
+    ports:
+      - 127.0.0.1:1080:1080
+    command: ['--disorder', '1', '--fake', '1', '--ttl', '1', '--auto=torst', '--tlsrec', '1+s', '--debug', '1']
+
+  # test-http-proxy:
+  #   build: ./demergi/
+  #   ports:
+  #     - 127.0.0.1:8888:8888
+  #   command: ['--addrs', '0.0.0.0:8888', '--dns-mode', 'dot', '--dot-server', '9.9.9.11', '--log-level', 'debug', '--https-clienthello-size', '10']

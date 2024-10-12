@@ -1,6 +1,6 @@
 FROM golang:alpine AS builder
 WORKDIR /go
-RUN go install github.com/xvzc/SpoofDPI/cmd/spoofdpi@latest \
+RUN go install -ldflags '-w -s -extldflags "-static"' -tags timetzdata github.com/xvzc/SpoofDPI/cmd/spoofdpi@latest \
 	&& apk update && apk add ca-certificates
 
 FROM busybox:stable-musl

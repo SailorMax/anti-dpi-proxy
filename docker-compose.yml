@@ -18,7 +18,9 @@ services:
     build: ./bye_dpi/
     ports:
       - 127.0.0.1:1080:1080
-    command: ['--disorder', '1', '--fake', '1', '--ttl', '5', '--auto=torst', '--tlsrec', '1+s', '--debug', '1']
+    dns:
+      - 9.9.9.9
+    command: ['--disorder', '1', '--fake', '1', '--ttl', '5', '--auto=torst', '--tlsrec', '1+s', '--timeout', '1', '--debug', '1']
 
   # test-http-proxy:
   #   build: ./demergi/

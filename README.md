@@ -23,6 +23,8 @@ All servers are only accessible on the local computer!
 1. `docker compose up`
 2. setup in your browser or system proxy configuration URL to http://127.0.0.1:8082/proxy_chooser.pac (or your file name here)
 
+### Configuration:
+- `ttl` has to be limited by your provider servers (`tracert/traceroute google.com`)
 
 ### If it doesn't work:
 1. try to uncomment "sock5-proxy" block in `docker-compose.yml` and switch "PROXY"-string to "SOCKS"-string in PAC-file

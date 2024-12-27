@@ -7,6 +7,7 @@ var domains2proxy = [
     "rutracker.org",
     "rutracker.cc",
     "medium.com",
+	"ntc.party",
     "linkedin.com",
     "x.com",
 ];

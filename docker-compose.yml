@@ -5,7 +5,16 @@ services:
       - ./static:/var/www/static:ro
     ports:
       - 127.0.0.1:8082:8082
+    stop_signal: SIGKILL
     command: ['/bin/httpd', '-f', '-vv', '-p', '8082', '-h', '/var/www/static', '-u', 'www-data']
+
+  # pac-server:
+  #   image: nginx:stable-alpine-slim
+  #   volumes:
+  #     - ./static:/usr/share/nginx/html:ro
+  #   stop_signal: SIGQUIT
+  #   ports:
+  #     - 127.0.0.1:8082:80
 
   # http-proxy:
   #   build: ./spoof_dpi/
@@ -20,7 +29,8 @@ services:
       - 127.0.0.1:1080:1080
     dns:
       - 9.9.9.9
-    command: ['--disorder', '1', '--fake', '1', '--ttl', '5', '--auto=torst', '--tlsrec', '1+s', '--timeout', '1', '--debug', '1']
+    # command: ['--disorder', '1', '--fake', '1', '--ttl', '5', '--auto=torst', '--tlsrec', '1+s', '--timeout', '1', '--debug', '1']
+    command: ['-s1', '-q1', '-Y', '-Ar', '-s5', '-o25000+s', '-At', '-f-1', '-r1+s','-As', '-s1', '-o1+s', '-s-1', '-An', '-b+500', '--debug', '1']
 
   # test-http-proxy:
   #   build: ./demergi/

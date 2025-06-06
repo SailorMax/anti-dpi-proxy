@@ -10,6 +10,8 @@ var domains2proxy = [
 	"ntc.party",
     "linkedin.com",
     "x.com",
+	"stackoverflow.com",
+	"stackexchange.com",
 ];
 
 var sDomains4SockProxy = domains2proxy.map(function(v) { return v+'|*.'+v; }).join('|');

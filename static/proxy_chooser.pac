@@ -1,3 +1,6 @@
+// var proxy_command = "PROXY 127.0.0.1:8888";
+var proxy_command = "SOCKS 127.0.0.1:1080";
+
 var domains2proxy = [
     "youtube.com",
     "googlevideo.com",
@@ -36,7 +39,7 @@ var ips2proxy = [
 var sDomains4SockProxy = domains2proxy.map(function(v) { return v+'|*.'+v; }).join('|');
 var aIpV4Masks4SockProxy = ips2proxy.map(function(ip_mask) {
 	var ip_mask_arr = ip_mask.split('/', 2);
-	var cidr = ip_mask_arr[1];
+	var cidr = ip_mask_arr[1] || 32;
 	var i, net_mask = [];
 	if (ip_mask_arr[0].indexOf(':') < 0) {	// ipv4
 		for (i=0; i<4; i++) {
@@ -50,7 +53,7 @@ var aIpV4Masks4SockProxy = ips2proxy.map(function(ip_mask) {
 }).filter(function(v) { return v !== null; });
 var aIpV6Masks4SockProxy = ips2proxy.map(function(ip_mask) {
 	var ip_mask_arr = ip_mask.split('/', 2);
-	var cidr = ip_mask_arr[1];
+	var cidr = ip_mask_arr[1] || 128;
 	var i, net_mask = [];
 	if (ip_mask_arr[0].indexOf(':') > 0) {	// ipv6
 		for (i=0; i<8; i++) {
@@ -75,7 +78,8 @@ function v6_as_arr(ip)
 				args[1] = 1;		// count to delete
 				while (to_add--) args.push('0');
 				[].splice.apply(parts, args);
-				if (parts[idx+1] === '') parts[idx+1] = '0';	// if '::' at end
+				if (parts[idx+1] === '')	// if '::' at end
+					parts[idx+1] = '0';
 				break;
 			}
 	}
@@ -103,9 +107,6 @@ function isInNetV6(host, mask, cidr)
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
 function FindProxyForURL(url, host)
 {
-	// var proxy_command = "PROXY 127.0.0.1:8888";
-	var proxy_command = "SOCKS 127.0.0.1:1080";
-
     // use proxy for specific domains
     if (shExpMatch(host, sDomains4SockProxy))
 		return proxy_command;
@@ -113,13 +114,13 @@ function FindProxyForURL(url, host)
     // use proxy for specific ips
 	var host_ip = dnsResolve(host) || host;
 	var idx, ip_mask
-	if (host_ip.indexOf(':') == -1) {
+	if (host_ip.indexOf('.') > 0) {
 		for (idx in aIpV4Masks4SockProxy) {
 			ip_mask = aIpV4Masks4SockProxy[idx];
 			if (isInNet(host_ip, ip_mask[0], ip_mask[1]))
 				return proxy_command;
 		}
-	} else {
+	} else if (host_ip.indexOf(':') > 0) {
 		for (idx in aIpV6Masks4SockProxy) {
 			ip_mask = aIpV6Masks4SockProxy[idx];
 			if (isInNetV6(host_ip, ip_mask[0], ip_mask[1]))
@@ -130,4 +131,3 @@ function FindProxyForURL(url, host)
     // by default use no proxy
     return "DIRECT";
 }
-

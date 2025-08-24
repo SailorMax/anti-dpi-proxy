@@ -33,6 +33,15 @@ services:
     # command: ['-s1', '-q1', '-Y', '-Ar', '-s5', '-o25000+s', '-At', '-f-1', '-r1+s', '-As', '-s1', '-o1+s', '-s-1', '-An', '-b+500', '--debug', '1']
     command: ['-Ku', '-a1', '-An', '-d1', '-s0+s', '-d3+s', '-s6+s', '-d9+s', '-s12+s', '-d15+s', '-s20+s', '-d25+s', '-s30+s', '-d35+s', '-At,r,s', '-s1', '-q1', '-At,r,s', '-s5', '-o25000+s', '-At,r,s', '-o1', '-d1', '-r1+s', '-t10', '-b1500', '-s0+s', '-d3+s', '-At,r,s', '-f-1', '-r1+s', '-At,r,s', '-s1', '-o1+s', '-s-1', '--debug', '1']
 
+  # mtproto-proxy:
+  #   image: telegrammessenger/proxy:latest
+  #   # volumes:
+  #   #   - ./mtproto-proxy:/data:ro
+  #   ports:
+  #     - 127.0.0.1:8443:443   # proxy port
+  #     - 127.0.0.1:2398:2398  # for /stats
+
+
   # test-http-proxy:
   #   build: ./demergi/
   #   ports:

@@ -6,6 +6,7 @@ RUN apk add make gcc musl-dev linux-headers \
 	&& cd byedpi-main/ \
 	&& make
 
+#FROM alpine:latest
 FROM busybox:stable-musl
 WORKDIR /
 COPY --from=builder /lib/ld-musl-* /lib/

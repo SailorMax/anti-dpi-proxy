@@ -1,20 +1,24 @@
 // var proxy_command = "PROXY 127.0.0.1:8888";
 var proxy_command = "SOCKS 127.0.0.1:1080";
 
+// domain masks (uses as "name or *.name")
 var domains2proxy = [
-    "youtube.com",
-    "googlevideo.com",
-    "youtu.be",
-    "youtubei.googleapis.com",
-    "ytimg.com",
-    "rutracker.org",
-    "rutracker.cc",
-    "medium.com",
+	"youtube.com",
+	"googlevideo.com",
+	"youtu.be",
+	"youtubei.googleapis.com",
+	"ytimg.com",
+	"rutracker.org",
+	"rutracker.cc",
+	"medium.com",
 	"ntc.party",
-    "linkedin.com",
-    "x.com",
+	"linkedin.com",
+	"x.com",
+	"twimg.com",
 	"stackoverflow.com",
 	"stackexchange.com",
+	"mega.nz",
+	"mega.co.nz",
 ];
 
 var ips2proxy = [
@@ -71,7 +75,7 @@ function v6_as_arr(ip)
 	var parts = ip.split(':');
 	if (parts.length < 8) {
 		var idx, to_add = 8 - parts.length + 1;
-		for (idx in parts)
+		for (idx in parts) {
 			if (parts[idx] === '') {
 				var args = [];
 				args[0] = idx-0;	// start
@@ -82,6 +86,7 @@ function v6_as_arr(ip)
 					parts[idx+1] = '0';
 				break;
 			}
+		}
 	}
 
 	return parts.map(function(v) { return parseInt(v, 16) });
@@ -107,20 +112,21 @@ function isInNetV6(host, mask, cidr)
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
 function FindProxyForURL(url, host)
 {
-    // use proxy for specific domains
-    if (shExpMatch(host, sDomains4SockProxy))
+	// use proxy for specific domains
+	if (shExpMatch(host, sDomains4SockProxy))
 		return proxy_command;
 
-    // use proxy for specific ips
+	// use proxy for specific ips
 	var host_ip = dnsResolve(host) || host;
 	var idx, ip_mask
-	if (host_ip.indexOf('.') > 0) {
+	if (host_ip.indexOf('.') > 0) {  // ipv4
 		for (idx in aIpV4Masks4SockProxy) {
 			ip_mask = aIpV4Masks4SockProxy[idx];
 			if (isInNet(host_ip, ip_mask[0], ip_mask[1]))
 				return proxy_command;
 		}
-	} else if (host_ip.indexOf(':') > 0) {
+
+	} else if (host_ip.indexOf(':') > 0) {  // ipv6
 		for (idx in aIpV6Masks4SockProxy) {
 			ip_mask = aIpV6Masks4SockProxy[idx];
 			if (isInNetV6(host_ip, ip_mask[0], ip_mask[1]))
@@ -128,6 +134,6 @@ function FindProxyForURL(url, host)
 		}
 	}
 
-    // by default use no proxy
-    return "DIRECT";
+	// by default use no proxy
+	return "DIRECT";
 }

@@ -1,12 +1,19 @@
 services:
   pac-server:
     image: busybox:stable-musl
+    environment:
+      PROXY_COMMAND: "PROXY 127.0.0.1:8888"
+      # PROXY_COMMAND: "SOCKS 127.0.0.1:1080"
+      EXT_PROXY_COMMAND: "PROXY 127.0.0.1:3128"
     volumes:
-      - ./static:/var/www/static:ro
+      - ./scripts:/opt/adp:ro
+      - ./conf:/opt/adp-conf:ro
+      # - ./static:/var/www/static:ro
     ports:
       - 127.0.0.1:8082:8082
     stop_signal: SIGKILL
-    command: '/bin/httpd -f -vv -p 8082 -h /var/www/static -u www-data'
+    # command: '/bin/httpd -f -vv -p 8082 -h /var/www/static -u www-data'
+    entrypoint: '/opt/adp/pac-server.sh -vv'
 
   # pac-server:
   #   image: nginx:stable-alpine-slim
@@ -18,32 +25,74 @@ services:
 
   dns-proxy:
     image: adguard/dnsproxy:latest
-    dns:
-      - 127.0.0.1
+    volumes:
+      - ./scripts:/opt/adp:ro
+      - ./conf:/opt/adp-conf:ro
+    environment:
+      BOOTSTRAP_DNS: "9.9.9.9:53"
+      DNS_FOR_DISPUTED_DOMAINS: "https://dns9.quad9.net/dns-query"
+      DEFAULT_DNS: "127.0.0.11"  # docker
+    # dns:
+    #   - 127.0.0.1
     ports:
-      - 127.0.0.1:53:53/tcp
-      - 127.0.0.1:53:53/udp
-      - 127.0.0.1:1080:1080  # port of joined proxy
-    command: '--upstream=https://dns9.quad9.net/dns-query --bootstrap=9.9.9.9:53 --verbose'
+      - 127.0.0.1:53:53/tcp  # DNS
+      - 127.0.0.1:53:53/udp  # DNS
+      # - 127.0.0.1:853:853/tcp  # DOT
+      # - 127.0.0.1:1080:1080  # port of joined proxy
+    # command: '--upstream=https://dns9.quad9.net/dns-query --bootstrap=9.9.9.9:53 --verbose'
+    entrypoint: '/opt/adp/dnsproxy.sh --verbose'
 
-  # http-proxy:
-  #   build: ./spoof_dpi/
+  ext-proxy:
+    build: ./proxy-chain/
+    volumes:
+      - ./scripts:/opt/adp:ro
+      - ./conf/ext_proxies.txt:/opt/proxy-chain/ext_proxies.txt:ro
+      - ./conf/ext_proxy_whitelist.txt:/opt/proxy-chain/ext_proxy_whitelist.txt:ro
+      - ./proxy-chain/app/server.js:/opt/proxy-chain/server.js
+    ports:
+      - 127.0.0.1:3128:3128
+    entrypoint: '/opt/adp/proxy-chain.sh'
+    command: '--whitelist_file ext_proxy_whitelist.txt'
+
+  http-proxy:
+    build: ./spoof_dpi/
+    volumes:
+      - ./scripts:/opt/adp:ro
+      - ./conf/spoofdpi.toml:/etc/spoofdpi.toml:ro
+    ports:
+      - 127.0.0.1:8888:8888
+    environment:
+      HTTP_PROXY: "http://ext-proxy:3129"
+      HTTPS_PROXY: "http://ext-proxy:3129"
+      NO_PROXY: "localhost,127.0.0.1"
+    entrypoint: '/opt/adp/spoofdpi.sh'
+    command: '--https-disorder --https-split-mode chunk --https-chunk-size 3 --log-level debug'
+
+  # test-http-proxy:
+  #   build: ./demergi/
   #   ports:
   #     - 127.0.0.1:8888:8888
-  #   command: '-debug -addr 0.0.0.0 -port 8888 -window-size 1 -dns-addr 9.9.9.9 -enable-doh'
+  #   command: '--addrs 0.0.0.0:8888 --dns-mode dot --dot-server 9.9.9.9 --log-level debug --https-clienthello-size 10'
 
   sock5-proxy:
     # image: tazihad/byedpi
     build: ./bye_dpi/
+    volumes:
+      - ./scripts:/opt/adp:ro
     depends_on:
       - dns-proxy
-    # ports:
-    #   - 127.0.0.1:1080:1080
-    network_mode: "service:dns-proxy"  # join with dns-proxy to has overwritten DNS
+    ports:
+      - 127.0.0.1:1080:1080
+    environment:
+      HTTP_PROXY: "http://ext-proxy:3129"
+      HTTPS_PROXY: "http://ext-proxy:3129"
+      NO_PROXY: "localhost,127.0.0.1"
+    entrypoint: '/opt/adp/bye_dpi.sh'
+    # network_mode: "service:dns-proxy"  # join with dns-proxy to has overwritten DNS
     # old:
     # command: '--disorder 1 --fake 1 --ttl 5 --auto=torst --tlsrec 1+s --timeout 1 --debug 1'
     # command: '-s1 -q1 -Y -Ar -s5 -o25000+s -At -f-1 -r1+s -As -s1 -o1+s -s-1 -An -b+500 --debug 1'
-    # time to time
+    # time to time:
     #command: '-d1+s -o2 -s5 -r5 -a1 --debug 1'
     #command: '-s1 -q1 -a1 -At,r,s -f-1 -r1+s -a1 --debug 1'
     #command: '-s1 -q1 -Y -a1 -At,r,s -f-1 -r1+s -a1 --debug 1'
@@ -65,13 +114,6 @@ services:
   #   ports:
   #     - 127.0.0.1:8443:443   # proxy port
   #     - 127.0.0.1:2398:2398  # for /stats
-
-
-  # test-http-proxy:
-  #   build: ./demergi/
-  #   ports:
-  #     - 127.0.0.1:8888:8888
-  #   command: '--addrs 0.0.0.0:8888 --dns-mode dot --dot-server 9.9.9.9 --log-level debug --https-clienthello-size 10'
 
 networks:
   frontend:

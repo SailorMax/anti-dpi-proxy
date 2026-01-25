@@ -1,46 +1,20 @@
-// var proxy_command = "PROXY 127.0.0.1:8888";
-var proxy_command = "SOCKS 127.0.0.1:1080";
+var proxy_command = "${PROXY_COMMAND}";
+var ext_proxy_command = "${EXT_PROXY_COMMAND}";  // temporary solution, while dpi proxies doesn't support upstream proxy
 
 // domain masks (uses as "name or *.name")
 var domains2proxy = [
-	"youtube.com",
-	"googlevideo.com",
-	"youtu.be",
-	"googleapis.com",
-	"ggpht.com",
-	"ytimg.com",
-	"rutracker.org",
-	"rutracker.cc",
-	"medium.com",
-	"ntc.party",
-	"linkedin.com",
-	"x.com",
-	"twimg.com",
-	"stackoverflow.com",
-	"stackexchange.com",
-	"mega.nz",
-	"mega.co.nz",
+	${DOMAINS_JS_LIST}
 ];
 
 var ips2proxy = [
-	// https://core.telegram.org/resources/cidr.txt
-	"91.108.56.0/22",
-	"91.108.4.0/22",
-	"91.108.8.0/22",
-	"91.108.16.0/22",
-	"91.108.12.0/22",
-	"149.154.160.0/20",
-	"91.105.192.0/23",
-	"91.108.20.0/22",
-	"185.76.151.0/24",
-	"2001:b28:f23d::/48",
-	"2001:b28:f23f::/48",
-	"2001:67c:4e8::/48",
-	"2001:b28:f23c::/48",
-	"2a0a:f280::/32",
-	// other
+	${IPS_JS_LIST}
 ];
 
+var extProxyWhiteList = [
+	${EXT_PROXY_WHITELIST_JS_LIST}
+];
+
+var sDomains4ExtProxy = extProxyWhiteList.map(function(v) { return v+'|*.'+v; }).join('|');
 var sDomains4SockProxy = domains2proxy.map(function(v) { return v+'|*.'+v; }).join('|');
 var aIpV4Masks4SockProxy = ips2proxy.map(function(ip_mask) {
 	var ip_mask_arr = ip_mask.split('/', 2);
@@ -113,6 +87,10 @@ function isInNetV6(host, mask, cidr)
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
 function FindProxyForURL(url, host)
 {
+	// use ext proxy for specific domains
+	if (ext_proxy_command != '' && shExpMatch(host, sDomains4ExtProxy))
+		return ext_proxy_command;
+
 	// use proxy for specific domains
 	if (shExpMatch(host, sDomains4SockProxy))
 		return proxy_command;

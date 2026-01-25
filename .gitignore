@@ -1,3 +1,2 @@
 # config files
-/static/*
-!/static/proxy_chooser.pac
+/scripts/ext_proxies_list.txt

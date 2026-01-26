@@ -31,8 +31,6 @@ case $1 in
 	"proxy-chain")
 		cp -f $(GET_ACTUAL_CFG_FILENAME 'ext_proxies.txt') /opt/proxy-chain/ext_proxies.txt
 		cp -f $(GET_ACTUAL_CFG_FILENAME 'ext_proxy_whitelist.txt') /opt/proxy-chain/ext_proxy_whitelist.txt
-		ls -l
-		cat /opt/proxy-chain/ext_proxies.txt
 		;;
 	*)
 		echo "Nothing to do"

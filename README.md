@@ -2,9 +2,9 @@ Anti DPI ([Deep packet inspection](https://en.wikipedia.org/wiki/Deep_packet_ins
 
 The solution uses [PAC](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file)-file to control proxy domains, DNS-over-HTTPS and make up docker containers:
 1. http-server (port 8082) for access to config(PAC) file via http-protocol (Windows [doesn't support](https://learn.microsoft.com/en-us/previous-versions/troubleshoot/browsers/administration/cannot-read-pac-file) local files)
-2. sock5-proxy-server (port 1080) based on [Bypass DPI](https://github.com/hufrea/byedpi)-solution
-3. (optional) http-proxy-server (port 8888) based on [Spoof DPI](https://github.com/xvzc/SpoofDPI)-solution
-4. (optional) dns-proxy-server (port 53) based on [DNS Proxy](https://github.com/AdguardTeam/dnsproxy)-solution
+2. socks5-proxy-server (port 1080) based on [Bypass DPI](https://github.com/hufrea/byedpi)-solution
+3. or http-proxy-server (port 8888) based on [Spoof DPI](https://github.com/xvzc/SpoofDPI)-solution
+4. dns-proxy-server (port 53) based on [DNS Proxy](https://github.com/AdguardTeam/dnsproxy)-solution
 5. (optional) ext-proxy-server (port 3128) based on [Proxy-chain](https://github.com/apify/proxy-chain)-solution
 
 All servers are only accessible for the local computer!
@@ -23,10 +23,15 @@ All servers are only accessible for the local computer!
 
 
 ### How to use it:
-0. setup list of required domains in `conf/disputed_domains.txt` or/and required ip masks in `conf/disputed_ips.txt`. Also you can fill `conf/ext_proxies.txt` by known proxies + `conf/ext_proxy_whitelist.txt` with domains, which answers are blocked. you can try to get proxies list by `scripts/ext_proxy_finder.sh`.
+0. setup config files:
+	* list of required domains in `conf/disputed_domains.txt` or/and required ip masks in `conf/disputed_ips.txt`
+	* also you can fill `conf/ext_proxies.txt` by known proxies + `conf/ext_proxy_whitelist.txt` with domains, which answers are blocked. (you can try to get proxies list by `scripts/ext_proxy_finder.sh`)
 1. `docker compose up`
-2. setup in your browser or system proxy configuration URL to http://127.0.0.1:8082/proxy_chooser.pac
-3. (optional) setup in your browser or system DNS server 127.0.0.1(:53)
+2. setup in your browser, system or application proxy configuration URL
+	* for custom domains:  http://127.0.0.1:8082/proxy_chooser.pac
+	* for any requests HTTP-proxy: 127.0.0.1:8888
+	* for any requests SOCKS5-proxy: 127.0.0.1:1080
+3. (optional) setup in your browser, system or application DNS server 127.0.0.1(:53)
 
 ### Configuration hints:
 - `ttl` has to be limited by your provider servers (`tracert/traceroute google.com`)

@@ -1,2 +1,10 @@
+.env
+
 # config files
+/conf/disputed_domains.txt
+/conf/disputed_ips.txt
+/conf/ext_proxies.txt
+/conf/ext_proxy_whitelist.txt
+
+# other
 /scripts/ext_proxies_list.txt

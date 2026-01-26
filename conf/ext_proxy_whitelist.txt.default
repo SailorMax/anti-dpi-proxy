@@ -1,6 +1,6 @@
 # External proxies can has limited traffic or is unsafety
 # Put here only ready to unsafe browsing not heavy domains/ips
 
-# rutracker.org
-# rutracker.cc
-# rutrk.org
+rutracker.org
+rutracker.cc
+rutrk.org

@@ -2,26 +2,15 @@ services:
   pac-server:
     image: busybox:stable-musl
     environment:
-      PROXY_COMMAND: "PROXY 127.0.0.1:8888"
-      # PROXY_COMMAND: "SOCKS 127.0.0.1:1080"
+      PROXY_COMMAND: "${PROXY_COMMAND:-PROXY 127.0.0.1:8888}"
       EXT_PROXY_COMMAND: "PROXY 127.0.0.1:3128"
     volumes:
       - ./scripts:/opt/adp:ro
       - ./conf:/opt/adp-conf:ro
-      # - ./static:/var/www/static:ro
     ports:
       - 127.0.0.1:8082:8082
     stop_signal: SIGKILL
-    # command: '/bin/httpd -f -vv -p 8082 -h /var/www/static -u www-data'
     entrypoint: '/opt/adp/pac-server.sh -vv'
-
-  # pac-server:
-  #   image: nginx:stable-alpine-slim
-  #   volumes:
-  #     - ./static:/usr/share/nginx/html:ro
-  #   stop_signal: SIGQUIT
-  #   ports:
-  #     - 127.0.0.1:8082:80
 
   dns-proxy:
     image: adguard/dnsproxy:latest
@@ -32,23 +21,17 @@ services:
       BOOTSTRAP_DNS: "9.9.9.9:53"
       DNS_FOR_DISPUTED_DOMAINS: "https://dns9.quad9.net/dns-query"
       DEFAULT_DNS: "127.0.0.11"  # docker
-    # dns:
-    #   - 127.0.0.1
     ports:
       - 127.0.0.1:53:53/tcp  # DNS
       - 127.0.0.1:53:53/udp  # DNS
-      # - 127.0.0.1:853:853/tcp  # DOT
-      # - 127.0.0.1:1080:1080  # port of joined proxy
-    # command: '--upstream=https://dns9.quad9.net/dns-query --bootstrap=9.9.9.9:53 --verbose'
+      - 127.0.0.1:853:853/tcp  # DOT
     entrypoint: '/opt/adp/dnsproxy.sh --verbose'
 
   ext-proxy:
     build: ./proxy-chain/
     volumes:
       - ./scripts:/opt/adp:ro
-      - ./conf/ext_proxies.txt:/opt/proxy-chain/ext_proxies.txt:ro
-      - ./conf/ext_proxy_whitelist.txt:/opt/proxy-chain/ext_proxy_whitelist.txt:ro
-      - ./proxy-chain/app/server.js:/opt/proxy-chain/server.js
+      - ./conf:/opt/adp-conf:ro
     ports:
       - 127.0.0.1:3128:3128
     entrypoint: '/opt/adp/proxy-chain.sh'
@@ -74,7 +57,7 @@ services:
   #     - 127.0.0.1:8888:8888
   #   command: '--addrs 0.0.0.0:8888 --dns-mode dot --dot-server 9.9.9.9 --log-level debug --https-clienthello-size 10'
 
-  sock5-proxy:
+  socks5-proxy:
     # image: tazihad/byedpi
     build: ./bye_dpi/
     volumes:

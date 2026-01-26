@@ -4,6 +4,14 @@ const url = require('url');
 const NodeUtils = require("node:util");
 const ProxyChain = require("proxy-chain");
 
+function ShuffleArray(arr) {
+	var j, i = arr.length;
+	while (i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+}
+
 // setup config
 const options = {
 	host: {
@@ -41,6 +49,8 @@ try
 	CONFIG.proxies = fs.readFileSync(CONFIG.proxies_file, 'utf8')
 						.split(/\n/)
 						.filter((el) => el.replace(/^#.*$/, ''));
+	ShuffleArray(CONFIG.proxies);
+
 	if (CONFIG.whitelist_file) {
 		CONFIG.whitelist = fs.readFileSync(CONFIG.whitelist_file, 'utf8')
 							.split(/\n/)
@@ -62,6 +72,7 @@ const server = new ProxyChain.Server({
 	serverType: 'http',
 
 	verbose: CONFIG.verbose,
+	proxy_idx: 0,
 
 	prepareRequestFunction: ({ hostname }) => {
 		let upstreamProxy = null;
@@ -69,7 +80,10 @@ const server = new ProxyChain.Server({
 			for (const domain of CONFIG.whitelist) {
 				const re = new RegExp('(^|\\.)'+domain.replaceAll('.', '\\.')+'$', "i");
 				if (hostname.match(re)) {
-					upstreamProxy = CONFIG.proxies[ Math.floor(Math.random() * CONFIG.proxies.length) ];
+					// take proxies by order, because list already shuffled
+					if (--this.proxy_idx < 0)
+						this.proxy_idx = CONFIG.proxies.length-1;
+					upstreamProxy = CONFIG.proxies[ this.proxy_idx ];
 				}
 			}
 		}

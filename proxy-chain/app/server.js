@@ -112,10 +112,8 @@ const server = new ProxyChain.Server({
 
 server.listen(() => {
 	console.log(`Proxy server is listening on ${server.host}:${server.port}.`);
-	console.log('List of actual proxies:');
-	console.dir(CONFIG.proxies);
-	console.log('Sites whitelist:');
-	console.dir(CONFIG.whitelist || 'None');
+	console.log('Actual proxies: ' + CONFIG.proxies.length);
+	console.log('Sites whitelist: ' + CONFIG.whitelist.length);
 });
 
 server.on('connectionClosed', ({ connectionId, stats }) => {

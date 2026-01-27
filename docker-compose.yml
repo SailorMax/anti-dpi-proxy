@@ -44,6 +44,7 @@ services:
       - ./conf/spoofdpi.toml:/etc/spoofdpi.toml:ro
     depends_on:
       - dns-proxy
+      - ext-proxy
     ports:
       - 127.0.0.1:8888:8888
     environment:
@@ -51,7 +52,7 @@ services:
       HTTPS_PROXY: "http://ext-proxy:3129"
       NO_PROXY: "localhost,127.0.0.1"
     entrypoint: '/opt/adp/spoofdpi.sh'
-    command: '--https-disorder --https-split-mode chunk --https-chunk-size 3 --log-level debug'
+    command: '--https-disorder --https-split-mode chunk --https-chunk-size 3 --log-level trace'
 
   # test-http-proxy:
   #   build: ./demergi/
@@ -66,6 +67,7 @@ services:
       - ./scripts:/opt/adp:ro
     depends_on:
       - dns-proxy
+      - ext-proxy
     ports:
       - 127.0.0.1:1080:1080
     environment:

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # change DNS to dns-proxy
-DNS_PROXY_IP=$(nslookup dns-proxy | awk '/^Address: / { print $2 }' | head -1)
+DNS_PROXY_IP=$(nslookup dns-proxy | awk '/^Server:/ { print $2 }' | head -1)
 if [ $? -eq 0 ]; then
 	echo "found dns-proxy with IP ${DNS_PROXY_IP}"
 else

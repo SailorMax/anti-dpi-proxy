@@ -41,3 +41,45 @@ All servers are only accessible for the local computer!
 1. try to find better arguments for "Bypass DPI". Details: https://github.com/hufrea/byedpi/blob/main/readme.txt
 2. try to change PROXY_COMMAND variable to "PROXY 127.0.0.1:8888" in `docker-compose.yml` and find better arguments for "Spoof DPI". Details: https://spoofdpi.xvzc.dev/user-guide/https/
 3. specific and not high traffic sites can be added to `conf/ext_proxy_whitelist.txt` if you have external proxies.
+4. in WSL possible require torn off [autoProxy](https://learn.microsoft.com/en-us/windows/wsl/wsl-config)
+
+
+### Target solution schema
+```mermaid
+sequenceDiagram
+	box rgb(82, 0, 0) Client
+	    participant client
+    end
+
+	box rgb(0, 82, 0) And-DPI-proxy
+	    participant http-server
+	    participant proxy-server
+	    participant dns-proxy-server
+	    participant ext-proxy-server
+    end
+
+	box rgb(0, 82, 82) Internet
+	    participant internet-proxy
+	    participant internet-resource
+    end
+
+    client		->> http-server: Ask for PAC-file
+    http-server ->> client: PAC-file
+    client		->> proxy-server: Ask internet resource
+	proxy-server ->> dns-proxy-server: Ask DNS record
+	dns-proxy-server ->> proxy-server: DNS record
+
+	alt regular behaviour
+		proxy-server ->> internet-resource: Ask resource
+		internet-resource ->> proxy-server: resource
+	else for whitelist domains
+		proxy-server ->> ext-proxy-server: Ask resource
+		ext-proxy-server ->> internet-proxy: Ask resource
+		internet-proxy ->> internet-resource: Ask resource
+		internet-resource ->> internet-proxy: resource
+		internet-proxy ->> ext-proxy-server: Ask resource
+		ext-proxy-server ->> proxy-server: Ask resource
+	end
+	proxy-server ->> client: resource
+
+```

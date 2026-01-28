@@ -72,10 +72,13 @@ const server = new ProxyChain.Server({
 	serverType: 'http',
 
 	verbose: CONFIG.verbose,
-	proxy_idx: 0,
 
-	prepareRequestFunction: ({ hostname }) => {
+	prepareRequestFunction: function({ hostname }) {
 		let upstreamProxy = null;
+
+		if (typeof this.proxy_idx == "undefined")
+			this.proxy_idx = 0;
+
 		if (CONFIG.whitelist) {
 			for (const domain of CONFIG.whitelist) {
 				const re = new RegExp('(^|\\.)'+domain.replaceAll('.', '\\.')+'$', "i");
@@ -84,11 +87,9 @@ const server = new ProxyChain.Server({
 					if (--this.proxy_idx < 0)
 						this.proxy_idx = CONFIG.proxies.length-1;
 					upstreamProxy = CONFIG.proxies[ this.proxy_idx ];
+					break;
 				}
 			}
-		}
-		if (CONFIG.whitelist && CONFIG.whitelist.indexOf(hostname) >= 0) {
-			upstreamProxy = CONFIG.proxies[ Math.floor(Math.random() * CONFIG.proxies.length) ];
 		}
 
 		const prepare = {
@@ -100,10 +101,6 @@ const server = new ProxyChain.Server({
 			const choosedProxy = new url.URL(prepare.upstreamProxyUrl);
 			choosedProxy.username = '';
 			choosedProxy.password = '';
-			console.log(`Request to ${hostname} via ${choosedProxy.toString()}`);
-		}
-		else {
-			console.log(`Request to ${hostname} directly`);
 		}
 
 		return prepare;
@@ -114,11 +111,11 @@ server.listen(() => {
 	console.log(`Proxy server is listening on ${server.host}:${server.port}.`);
 	console.log('Actual proxies: ' + CONFIG.proxies.length);
 	console.log('Sites whitelist: ' + CONFIG.whitelist.length);
+	console.log('Verbose output: ' + CONFIG.verbose);
 });
 
 server.on('connectionClosed', ({ connectionId, stats }) => {
-	console.log(`Connection ${connectionId} closed`);
-	console.dir(stats);
+	console.log(`Connection ${connectionId} closed with stats: ` + JSON.stringify(stats));
 });
 
 server.on('requestFailed', ({ request, error }) => {

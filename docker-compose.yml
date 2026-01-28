@@ -35,7 +35,7 @@ services:
     ports:
       - 127.0.0.1:3128:3128
     entrypoint: '/opt/adp/proxy-chain.sh'
-    command: '--whitelist_file ext_proxy_whitelist.txt'
+    command: '--whitelist_file ext_proxy_whitelist.txt --verbose'
 
   http-proxy:
     build: ./spoof_dpi/

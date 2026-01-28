@@ -10,8 +10,8 @@ fi
 
 proxy_types=("socks5" "socks4" "http")
 for proxy_type in "${proxy_types[@]}"; do
-	echo "Downloading ${source_url}/${proxy_type}.txt ..."
-	proxies_list=($(curl ${source_url}/${proxy_type}.txt))
+	echo "Downloading ${source_url}${proxy_type}.txt ..."
+	proxies_list=($(curl ${source_url}${proxy_type}.txt))
 
 	for proxy_item in "${proxies_list[@]}"; do
 		echo -n "Check ${proxy_type}://${proxy_item} ... "

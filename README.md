@@ -31,6 +31,8 @@ All servers are only accessible for the local computer!
 	* for custom domains:  http://127.0.0.1:8082/proxy_chooser.pac
 	* for any requests HTTP-proxy: 127.0.0.1:8888
 	* for any requests SOCKS5-proxy: 127.0.0.1:1080
+	* for any requests HTTP-proxy via whitelist domains external proxies: 127.0.0.1:3128
+	* for any requests SOCKS5-proxy via ssh tunnel: 127.0.0.1:1081 (require setup server and keys)
 3. (optional) setup in your browser, system or application DNS server 127.0.0.1(:53)
 
 ### Configuration hints:

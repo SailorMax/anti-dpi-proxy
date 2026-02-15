@@ -1,0 +1,5 @@
+Host remote-ssh-proxy
+   Hostname ${REMOTE_HOST}
+   Port ${REMOTE_PORT}
+   User ${REMOTE_USER}
+   IdentityFile ~/.ssh/id_ed25519

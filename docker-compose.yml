@@ -2,7 +2,7 @@ services:
   pac-server:
     image: busybox:stable-musl
     environment:
-      PROXY_COMMAND: "${PROXY_COMMAND:-PROXY 127.0.0.1:8888}"
+      DPI_PROXY_COMMAND: "${DPI_PROXY_COMMAND:-PROXY 127.0.0.1:8888}"
       EXT_PROXY_COMMAND: "PROXY 127.0.0.1:3128"
     volumes:
       - ./scripts:/opt/adp:ro
@@ -19,7 +19,7 @@ services:
       - ./conf:/opt/adp-conf:ro
     environment:
       BOOTSTRAP_DNS: "9.9.9.9:53"
-      DNS_FOR_DISPUTED_DOMAINS: "https://dns9.quad9.net/dns-query"
+      DNS_FOR_PROXIED_DOMAINS: "https://dns9.quad9.net/dns-query"
       DEFAULT_DNS: "127.0.0.11"  # docker
     ports:
       - 127.0.0.1:53:53/tcp  # DNS
@@ -35,7 +35,17 @@ services:
     ports:
       - 127.0.0.1:3128:3128
     entrypoint: '/opt/adp/proxy-chain.sh'
-    command: '--whitelist_file ext_proxy_whitelist.txt --verbose'
+    command: '--whitelist_file domains_for_ext_proxy.txt --verbose'
+
+  # tor-proxy:
+  #   image: peterdavehello/tor-socks-proxy:latest
+
+  # ssh-proxy:
+  #   build: ./ssh-proxy/
+  #   volumes:
+  #     - ./scripts:/opt/adp:ro
+  #     - ./conf:/opt/adp-conf:ro
+  #   command: '-vvv'
 
   http-proxy:
     build: ./spoof_dpi/

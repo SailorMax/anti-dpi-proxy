@@ -3,8 +3,14 @@
 # config files
 /conf/disputed_domains.txt
 /conf/disputed_ips.txt
+/conf/domains_for_dpi_proxy.txt
 /conf/ext_proxies.txt
 /conf/ext_proxy_whitelist.txt
+/conf/domains_for_ext_proxy.txt
+/conf/ssh_proxy.conf
+
+/conf/.ssh/**/*
+!/conf/.ssh/keygen.sh
 
 # other
 /scripts/ext_proxies_list.txt

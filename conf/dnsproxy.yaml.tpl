@@ -17,6 +17,6 @@ ratelimit-subnet-len-ipv4: 24
 ratelimit-subnet-len-ipv6: 64
 udp-buf-size: 0
 upstream:
-  - "[/${DNSMASQ_STR}/]${DNS_FOR_DISPUTED_DOMAINS}"
+  - "[/${DNSMASQ_STR}/]${DNS_FOR_PROXIED_DOMAINS}"
   - "${DEFAULT_DNS}"  # Docker's DNS
 timeout: '10s'

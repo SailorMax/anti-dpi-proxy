@@ -46,13 +46,15 @@ const options = {
 const CONFIG = NodeUtils.parseArgs({ options, strict: false }).values;
 try
 {
-	CONFIG.proxies = fs.readFileSync(CONFIG.proxies_file, 'utf8')
+  CONFIG.proxies = fs.readFileSync(CONFIG.proxies_file, 'utf8')
+						.replace("\r", '')
 						.split(/\n/)
 						.filter((el) => el.replace(/^#.*$/, ''));
 	ShuffleArray(CONFIG.proxies);
 
 	if (CONFIG.whitelist_file) {
 		CONFIG.whitelist = fs.readFileSync(CONFIG.whitelist_file, 'utf8')
+							.replace("\r", '')
 							.split(/\n/)
 							.filter((el) => el.replace(/^#.*$/, ''));
 	}

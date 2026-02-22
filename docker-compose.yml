@@ -40,13 +40,15 @@ services:
   # tor-proxy:
   #   image: peterdavehello/tor-socks-proxy:latest
 
-  # ssh-proxy:
-  #   build: ./ssh-proxy/
-  #   volumes:
-  #     - ./scripts:/opt/adp:ro
-  #     - ./conf:/opt/adp-conf:ro
-  #   entrypoint: '/opt/adp/ssh-proxy.sh'
-  #   command: '-vvv'
+  ssh-proxy:
+    build: ./ssh-proxy/
+    volumes:
+      - ./scripts:/opt/adp:ro
+      - ./conf:/opt/adp-conf:ro
+    ports:
+      - 127.0.0.1:1081:1081
+    entrypoint: '/opt/adp/ssh-proxy.sh'
+    command: '-v'
 
   dpi-http-proxy:
     build: ./spoof_dpi/

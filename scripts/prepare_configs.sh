@@ -31,9 +31,9 @@ case $1 in
 		cp -f $(GET_ACTUAL_CFG_FILENAME 'domains_for_ext_proxy.txt') /opt/proxy-chain/domains_for_ext_proxy.txt
 		;;
 	"ssh-proxy")
-		cp -f $(GET_ACTUAL_CFG_FILENAME 'ssh_proxy.conf') ~/.ssh/config
+		mkdir -p ~/.ssh/
 		cp -f ${CFG_DIR}.ssh/* ~/.ssh/
-		ls -l ~/.ssh/
+		cp -f $(GET_ACTUAL_CFG_FILENAME 'ssh_proxy.conf') ~/.ssh/config
 		;;
 	*)
 		echo "Nothing to do"

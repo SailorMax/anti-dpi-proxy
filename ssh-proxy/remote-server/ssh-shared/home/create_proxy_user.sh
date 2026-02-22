@@ -10,11 +10,12 @@ USER_HOME_DIR="/home/$1"
 
 echo -n "Creating user $1... "
 #useradd --shell=/bin/true $1
-adduser -D $1 users
+adduser -D -s /bin/true $1 users
+usermod -p '*' $1
 echo "ok"
 
 echo -n "Creating home directory... "
-[ -d $USER_HOME_DIR ] || mkdir -p ${USER_HOME_DIR}/.ssh/
+[ -d $USER_HOME_DIR/.ssh/ ] || mkdir -p ${USER_HOME_DIR}/.ssh/
 chown $1:users ${USER_HOME_DIR}/.ssh
 chmod 500 ${USER_HOME_DIR}/.ssh
 echo "ok"

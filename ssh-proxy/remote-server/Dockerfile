@@ -1,5 +1,5 @@
 FROM alpine:latest
-RUN apk add --update openssh
+RUN apk add --update openssh shadow
 
 COPY ./ssh-shared/home/create_proxy_user.sh /home/
 

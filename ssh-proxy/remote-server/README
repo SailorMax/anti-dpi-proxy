@@ -4,7 +4,7 @@
 
 ## Client steps:
 1. create keys: conf/.ssh/keygen.sh
-2. setup client user on server: `docker composer exec -it ssh-server /home/create_proxy_user.sh username < id_ed25519.pub`
+2. setup client user on server: `docker compose exec -it ssh-server /home/create_proxy_user.sh username < id_ed25519.pub`
 3. setup socks5://ssh-proxy:1080 in conf/ext_proxies.txt
 
 manual test:

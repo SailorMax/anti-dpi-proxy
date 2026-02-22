@@ -1,15 +1,17 @@
 # SSH-server:
-1. `apt install docker.io docker-compose`
-2. `docker compose up`
+1. `adduser admin-username sudo` and test it
+2. setup 'PermitRootLogin no' in /etc/ssh/sshd_config
+3. `apt install fail2ban docker.io docker-compose`
+4. `docker compose up`
 
-## Client steps:
+## Setup client:
 1. create keys: conf/.ssh/keygen.sh
 2. setup client user on server: `docker compose exec -it ssh-server /home/create_proxy_user.sh username < id_ed25519.pub`
 3. setup socks5://ssh-proxy:1080 in conf/ext_proxies.txt
 
 manual test:
-1. `ssh -vvv -D 0.0.0.0:1081 -N -C -i ./id_ed25519 username@127.0.0.1 -p 443`
-2. `curl -v -x socks5://127.0.0.1:1081 'http://ya.ru'`
+1. run proxy: `ssh -vvv -D 0.0.0.0:1081 -N -C -i ./id_ed25519 username@127.0.0.1 -p 443`
+2. use proxy: `curl -v -x socks5://127.0.0.1:1081 'http://ya.ru'`
 
 
 # MTProto-server:

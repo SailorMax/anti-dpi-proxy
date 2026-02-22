@@ -8,6 +8,7 @@ services:
       - ./ssh-shared/home:/home:rw
     ports:
       - 0.0.0.0:443:443
+    restart: on-failure:3
     entrypoint: 'sh /entrypoint.sh'
     command: '-e'  # logs to output (but file-logs is better for fail2ban scan)
 
@@ -17,5 +18,6 @@ services:
       - ./mtproto-shared:/data:rw
     ports:
       - 0.0.0.0:8443:443   # proxy port
-      - 0.0.0.0:12398:2398  # for /stats
+      # - 0.0.0.0:12398:2398  # for /stats -- available only from localhost
+    restart: on-failure:3
     stop_signal: SIGKILL

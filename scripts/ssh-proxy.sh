@@ -5,4 +5,4 @@ $SCRIPT_DIR/prepare_configs.sh ssh-proxy
 
 # run server
 set -Eeo pipefail
-ssh -D 0.0.0.0:1081 -N -C $* remote-ssh-proxy
+ssh -D 0.0.0.0:1081 -N -C "$@" remote-ssh-proxy-alias

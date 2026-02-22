@@ -1,0 +1,33 @@
+# config for /etc/sshd/
+
+# QUIET, FATAL, ERROR, INFO, VERBOSE, DEBUG, DEBUG1, DEBUG2, and DEBUG3
+LogLevel DEBUG1
+Banner none
+
+PermitRootLogin no
+PubkeyAuthentication yes
+PasswordAuthentication yes
+
+Port 443
+PermitOpen any
+
+# no shell
+ForceCommand /usr/bin/true
+# only proxy
+AllowTCPForwarding yes
+X11Forwarding no
+PermitTTY no
+
+
+# AllowUsers proxyuser
+
+
+# useradd proxyuser
+
+# Match User proxyuser
+# 	# no shell
+#     ForceCommand /usr/bin/true
+# 	# only proxy
+#     AllowTCPForwarding yes
+#     X11Forwarding no
+#     PermitTTY no

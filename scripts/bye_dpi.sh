@@ -13,4 +13,4 @@ cp /etc/resolv.conf /etc/resolv.conf.default
 cat /etc/resolv.conf.new > /etc/resolv.conf
 
 # run server
-exec ./ciadpi $*
+exec ./ciadpi "$@"

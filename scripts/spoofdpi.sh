@@ -10,4 +10,4 @@ else
 fi
 
 # run server
-exec ./spoofdpi --dns-addr ${DNS_PROXY_IP}:53 --dns-mode udp $*
+exec ./spoofdpi --dns-addr ${DNS_PROXY_IP}:53 --dns-mode udp "$@"

@@ -1,4 +1,6 @@
 # SSH-server:
+1. `apt install docker.io docker-compose`
+2. `docker compose up`
 
 ## Client steps:
 1. create keys: conf/.ssh/keygen.sh

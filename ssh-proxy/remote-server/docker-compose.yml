@@ -2,10 +2,10 @@ services:
   ssh-server:
     build: ./
     volumes:
-      - ./container/entrypoint.sh:/entrypoint.sh:ro
-      - ./container/etc/sshd_config:/etc/ssh/sshd_config:ro
-      - ./container/etc:/root/external:rw  # we can't mount pass-files directly
-      - ./container/home:/home:rw
+      - ./ssh-shared/entrypoint.sh:/entrypoint.sh:ro
+      - ./ssh-shared/etc/sshd_config:/etc/ssh/sshd_config:ro
+      - ./ssh-shared/etc:/root/external:rw  # we can't mount pass-files directly
+      - ./ssh-shared/home:/home:rw
     ports:
       - 0.0.0.0:443:443
     entrypoint: '/entrypoint.sh'

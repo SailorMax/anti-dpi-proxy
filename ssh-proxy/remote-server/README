@@ -1,5 +1,5 @@
 # SSH-server:
-1. `adduser admin-username sudo` and test it
+1. `adduser admin-username sudo` and test it (optionally put in /etc/sudoers.d/username string 'username ALL=(ALL) NOPASSWD: ALL')
 2. setup 'PermitRootLogin no' in /etc/ssh/sshd_config
 3. `apt install fail2ban docker.io docker-compose`
 4. `docker compose up`
@@ -11,7 +11,7 @@
 
 manual test:
 1. run proxy: `ssh -vvv -D 0.0.0.0:1081 -N -C -i ./id_ed25519 username@127.0.0.1 -p 443`
-2. use proxy: `curl -v -x socks5://127.0.0.1:1081 'http://ya.ru'`
+2. use proxy: `curl -v -x socks5://127.0.0.1:1081 'https://checkip.amazonaws.com'`
 
 
 # MTProto-server:

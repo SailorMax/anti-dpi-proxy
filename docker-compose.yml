@@ -49,6 +49,7 @@ services:
       - ./conf:/opt/adp-conf:ro
     ports:
       - 127.0.0.1:1081:1081
+    restart: on-failure:256  # if not setuped it will exit 0 => only on failures
     entrypoint: '/opt/adp/ssh-proxy.sh'
     command: '-v'
 

@@ -32,6 +32,8 @@ services:
     volumes:
       - ./scripts:/opt/adp:ro
       - ./conf:/opt/adp-conf:ro
+    depends_on:
+      - dns-proxy
     ports:
       - 127.0.0.1:3128:3128
     entrypoint: '/opt/adp/proxy-chain.sh'

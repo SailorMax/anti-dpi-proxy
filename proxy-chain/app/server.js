@@ -1,73 +1,15 @@
-const process = require('node:process');
-const fs = require('node:fs');
-const url = require('url');
-const NodeUtils = require("node:util");
-const ProxyChain = require("proxy-chain");
+import process from 'node:process'
+import url from 'node:url'
+import ProxyChain from 'proxy-chain'
 
-function ShuffleArray(arr) {
-	var j, i = arr.length;
-	while (i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-}
-
-// setup config
-const options = {
-	host: {
-		type: 'string',
-		short: 'h',
-		default: '127.0.0.1',
-		help: 'host ip'
-	},
-	port: {
-		type: 'string',
-		short: 'p',
-		default: '3128',
-		help: 'port number'
-	},
-	verbose: {
-		type: 'boolean',
-		short: 'v',
-		default: false,
-		help: 'verbose logs'
-	},
-	proxies_file: {
-		type: 'string',
-		require: true,
-		help: 'file with list of proxies. Sample: http://1.2.3.4:8080'
-	},
-	whitelist_file: {
-		type: 'string',
-		help: 'file with whitelist. All other sites will not use proxy.'
-	},
-};
-
-const CONFIG = NodeUtils.parseArgs({ options, strict: false }).values;
-try
-{
-  CONFIG.proxies = fs.readFileSync(CONFIG.proxies_file, 'utf8')
-						.replace("\r", '')
-						.split(/\n/)
-						.filter((el) => el.replace(/^#.*$/, ''));
-	ShuffleArray(CONFIG.proxies);
-
-	if (CONFIG.whitelist_file) {
-		CONFIG.whitelist = fs.readFileSync(CONFIG.whitelist_file, 'utf8')
-							.replace("\r", '')
-							.split(/\n/)
-							.filter((el) => el.replace(/^#.*$/, ''));
-	}
-} catch (err) {
-	console.error(err);
-}
+import { CONFIG } from './libs/cli_args.js';
+import { CheckHostInWhitelistAsync } from './libs/whitelist_tools.js';
 
 if (!CONFIG.proxies.length) {
 	console.error('Proxy list is empty!');
 	process.exit(255);
 }
 
-// init server
 const server = new ProxyChain.Server({
 	host: CONFIG.host,
 	port: CONFIG.port,
@@ -75,23 +17,17 @@ const server = new ProxyChain.Server({
 
 	verbose: CONFIG.verbose,
 
-	prepareRequestFunction: function({ hostname }) {
+	prepareRequestFunction: async function({ hostname }) {
 		let upstreamProxy = null;
 
 		if (typeof this.proxy_idx == "undefined")
 			this.proxy_idx = 0;
 
-		if (CONFIG.whitelist) {
-			for (const domain of CONFIG.whitelist) {
-				const re = new RegExp('(^|\\.)'+domain.replaceAll('.', '\\.')+'$', "i");
-				if (hostname.match(re)) {
-					// take proxies by order, because list already shuffled
-					if (--this.proxy_idx < 0)
-						this.proxy_idx = CONFIG.proxies.length-1;
-					upstreamProxy = CONFIG.proxies[ this.proxy_idx ];
-					break;
-				}
-			}
+		if (CONFIG.whitelist && await CheckHostInWhitelistAsync(hostname, CONFIG.whitelist)) {
+			// take proxies by order, because list already shuffled
+			if (--this.proxy_idx < 0)
+				this.proxy_idx = CONFIG.proxies.length-1;
+			upstreamProxy = CONFIG.proxies[ this.proxy_idx ];
 		}
 
 		const prepare = {

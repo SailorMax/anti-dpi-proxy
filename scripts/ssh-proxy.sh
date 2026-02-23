@@ -1,7 +1,7 @@
 #!/bin/sh
 SCRIPT_DIR=$(dirname $(readlink -f "$0"))
 
-$SCRIPT_DIR/prepare_configs.sh ssh-proxy
+source $SCRIPT_DIR/prepare_configs.sh ssh-proxy
 
 # check settings
 cat ~/.ssh/config | grep 'Hostname ${'

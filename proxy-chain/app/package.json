@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "proxy-chain": "2.7.1"
   }

@@ -13,7 +13,7 @@
 !/conf/.ssh/keygen.sh
 
 # other
-/scripts/ext_proxies_list.txt
+/scripts/tools/ext_proxies_list.txt
 
 # servers
 /**/ssh-proxy/remote-server/ssh-shared/etc/passwd

@@ -28,7 +28,7 @@ services:
     entrypoint: '/opt/adp/dnsproxy.sh --verbose'
 
   ext-proxy:
-    build: ./proxy-chain/
+    build: ./src/proxy-chain/
     volumes:
       - ./scripts:/opt/adp:ro
       - ./conf:/opt/adp-conf:ro
@@ -43,7 +43,7 @@ services:
   #   image: peterdavehello/tor-socks-proxy:latest
 
   ssh-proxy:
-    build: ./ssh-proxy/
+    build: ./src/ssh-proxy/
     volumes:
       - ./scripts:/opt/adp:ro
       - ./conf:/opt/adp-conf:ro
@@ -53,7 +53,7 @@ services:
     command: '-v'
 
   dpi-http-proxy:
-    build: ./spoof_dpi/
+    build: ./src/spoof_dpi/
     volumes:
       - ./scripts:/opt/adp:ro
       - ./conf/spoofdpi.toml:/etc/spoofdpi.toml:ro
@@ -77,7 +77,7 @@ services:
 
   dpi-socks5-proxy:
     # image: tazihad/byedpi
-    build: ./bye_dpi/
+    build: ./src/bye_dpi/
     volumes:
       - ./scripts:/opt/adp:ro
     depends_on:

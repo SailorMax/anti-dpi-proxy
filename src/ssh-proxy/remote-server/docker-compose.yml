@@ -16,6 +16,8 @@ services:
     image: telegrammessenger/proxy:latest
     volumes:
       - ./mtproto-shared:/data:rw
+    environment:
+      TAG: ${MTPROTO_TAG}
     ports:
       - 0.0.0.0:8443:443   # proxy port
       # - 0.0.0.0:12398:2398  # for /stats -- available only from localhost

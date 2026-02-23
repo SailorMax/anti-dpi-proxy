@@ -17,7 +17,8 @@ manual test:
 # MTProto-server:
 1. start the server
 2. register it with telegram bot: https://t.me/mtproxybot
-3. set received tag in the Telegram client
+3. set received secret in the Telegram client
+4. setup received tag into local .env-file as MTPROTO_TAG
 
 
 #### hints

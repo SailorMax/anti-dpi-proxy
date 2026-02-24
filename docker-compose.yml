@@ -10,7 +10,7 @@ services:
     ports:
       - 127.0.0.1:8082:8082
     stop_signal: SIGKILL
-    entrypoint: '/opt/adp/pac-server.sh -vv'
+    entrypoint: 'sh /opt/adp/pac-server.sh -vv'
 
   dns-proxy:
     image: adguard/dnsproxy:latest
@@ -25,7 +25,7 @@ services:
       - 127.0.0.1:53:53/tcp  # DNS
       - 127.0.0.1:53:53/udp  # DNS
       - 127.0.0.1:853:853/tcp  # DOT
-    entrypoint: '/opt/adp/dnsproxy.sh --verbose'
+    entrypoint: 'sh /opt/adp/dnsproxy.sh --verbose'
 
   ext-proxy:
     build: ./src/proxy-chain/
@@ -36,7 +36,7 @@ services:
       - dns-proxy
     ports:
       - 127.0.0.1:3128:3128
-    entrypoint: '/opt/adp/proxy-chain.sh'
+    entrypoint: 'sh /opt/adp/proxy-chain.sh'
     command: '--whitelist_file domains_for_ext_proxy.txt --verbose'
 
   # tor-proxy:
@@ -50,7 +50,7 @@ services:
     ports:
       - 127.0.0.1:1081:1081
     restart: on-failure:256  # if not setuped it will exit 0 => only on failures
-    entrypoint: '/opt/adp/ssh-proxy.sh'
+    entrypoint: 'sh /opt/adp/ssh-proxy.sh'
     command: '-v'
 
   dpi-http-proxy:
@@ -67,7 +67,7 @@ services:
       HTTP_PROXY: "http://ext-proxy:3129"
       HTTPS_PROXY: "http://ext-proxy:3129"
       NO_PROXY: "localhost,127.0.0.1"
-    entrypoint: '/opt/adp/spoofdpi.sh'
+    entrypoint: 'sh /opt/adp/spoofdpi.sh'
     command: '--https-disorder --https-split-mode chunk --https-chunk-size 3 --log-level trace'
 
   # test-http-proxy:
@@ -90,7 +90,7 @@ services:
       HTTP_PROXY: "http://ext-proxy:3129"
       HTTPS_PROXY: "http://ext-proxy:3129"
       NO_PROXY: "localhost,127.0.0.1"
-    entrypoint: '/opt/adp/bye_dpi.sh'
+    entrypoint: 'sh /opt/adp/bye_dpi.sh'
     # network_mode: "service:dns-proxy"  # join with dns-proxy to has overwritten DNS
     # old:
     # command: '--disorder 1 --fake 1 --ttl 5 --auto=torst --tlsrec 1+s --timeout 1 --debug 1'

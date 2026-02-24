@@ -10,8 +10,8 @@ ServerAliveInterval 20
 ServerAliveCountMax 3
 TCPKeepAlive no
 
-# analog of: ssh -D 0.0.0.0:1081 -N -C -i ~/.ssh/id_ed25519 ${REMOTE_USER}@${REMOTE_HOST} -p ${REMOTE_PORT}
-Host remote-ssh-proxy
-   Hostname ${REMOTE_HOST}
-   Port ${REMOTE_PORT}
-   User ${REMOTE_USER}
+# analog of: ssh -D 0.0.0.0:1081 -N -C -i ~/.ssh/id_ed25519 REMOTE_USER@REMOTE_HOST -p REMOTE_PORT
+Host remote-ssh-proxy-alias
+   Hostname REMOTE_HOST
+   Port REMOTE_PORT
+   User REMOTE_USER

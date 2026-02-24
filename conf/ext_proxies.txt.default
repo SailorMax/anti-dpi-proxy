@@ -2,3 +2,6 @@
 # socks5://1.1.1.1:5678
 # socks4://1.1.1.1:10527
 # http://1.1.1.1:8888
+
+# use ssh-proxy service of this solution
+# socks5://ssh-proxy:1081

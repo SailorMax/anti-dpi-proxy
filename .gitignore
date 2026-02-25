@@ -20,6 +20,7 @@
 /**/ssh-proxy/remote-server/ssh-shared/etc/passwd.prev
 /**/ssh-proxy/remote-server/ssh-shared/etc/shadow
 /**/ssh-proxy/remote-server/ssh-shared/etc/shadow.prev
+/**/ssh-proxy/remote-server/ssh-shared/etc/ssh/ssh_host_*_key*
 /**/ssh-proxy/remote-server/**/id_*
 /**/ssh-proxy/remote-server/**/authorized_keys
 

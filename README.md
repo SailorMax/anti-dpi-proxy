@@ -41,6 +41,7 @@ All servers are only accessible for the local computer!
 1. try to find better arguments for "Bypass DPI". Details: https://github.com/hufrea/byedpi/blob/main/readme.txt
 2. try to change PROXY_COMMAND variable to "PROXY 127.0.0.1:8888" in `docker-compose.yml` and find better arguments for "Spoof DPI". Details: https://spoofdpi.xvzc.dev/user-guide/https/
 3. in WSL possible require turn off [autoProxy](https://learn.microsoft.com/en-us/windows/wsl/wsl-config)
+4. In case if remote ssh-server change it's keys you need to remove ssh-proxy container to reset stored keys
 
 
 ### Target solution schema

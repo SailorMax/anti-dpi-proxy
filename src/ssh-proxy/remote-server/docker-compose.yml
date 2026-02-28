@@ -17,9 +17,12 @@ services:
     volumes:
       - ./mtproto-shared:/data:rw
     environment:
-      TAG: ${MTPROTO_TAG}
+      TAG: ${MTPROTO_TAG:-}
+      SECRET: ${MTPROTO_SECRET:-}  # for mtg-version use 'dd'-prefix to turn on obfuscation mode
     ports:
-      - 0.0.0.0:8443:443   # proxy port
-      # - 0.0.0.0:12398:2398  # for /stats -- available only from localhost
+      - 0.0.0.0:8443:443  # proxy port (:2398/stats only from localhost)
     restart: on-failure:3
     stop_signal: SIGKILL
+    # to support :2398 stats port uncomment next lines:
+    # entrypoint: [ "/bin/sh", "-c" ]
+    # command: "sed -i '/^exec.*\\/mtproto-proxy/{/$$@/!s/$/ \"$$@\"/}' /run.sh; /run.sh --http-stats"

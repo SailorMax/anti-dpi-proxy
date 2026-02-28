@@ -23,6 +23,7 @@
 /**/ssh-proxy/remote-server/ssh-shared/etc/ssh/ssh_host_*_key*
 /**/ssh-proxy/remote-server/**/id_*
 /**/ssh-proxy/remote-server/**/authorized_keys
+/**/ssh-proxy/remote-server/telemt-shared/config.toml
 
 /**/ssh-proxy/remote-server/mtproto-shared/**/*
 !/**/ssh-proxy/remote-server/mtproto-shared/.gitkeep

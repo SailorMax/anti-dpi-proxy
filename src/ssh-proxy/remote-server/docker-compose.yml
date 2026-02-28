@@ -26,3 +26,23 @@ services:
     # to support :2398 stats port uncomment next lines:
     # entrypoint: [ "/bin/sh", "-c" ]
     # command: "sed -i '/^exec.*\\/mtproto-proxy/{/$$@/!s/$/ \"$$@\"/}' /run.sh; /run.sh --http-stats"
+
+  # mtg-proxy:  # require setup for specifi server :(
+  #   image: nineseconds/mtg:2
+  #   ports:
+  #     - 0.0.0.0:4430:443  # proxy port (:2398/stats only from localhost)
+  #   restart: on-failure:3
+
+  telemt-proxy:
+    image: ghcr.io/telemt/telemt:latest
+    volumes:
+      - ./telemt-shared/config.toml:/app/config.toml:ro
+    tmpfs:
+      - /run/telemt:rw,mode=1777,size=1m
+    environment:
+      RUST_LOG: normal
+    ports:
+      - 0.0.0.0:4430:443
+      - 127.0.0.1:9090:9090  # metrics (curl -s localhost:9090/metrics | grep '^telemt_user_unique_ips_')
+    restart: on-failure:3
+    stop_signal: SIGKILL

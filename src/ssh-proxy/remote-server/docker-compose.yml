@@ -1,11 +1,11 @@
 services:
   ssh-server:
-    build: ./
+    build: ./ssh-server/
     volumes:
-      - ./ssh-shared/entrypoint.sh:/entrypoint.sh:ro
-      - ./ssh-shared/etc/ssh/sshd_config:/etc/ssh/sshd_config:ro
-      - ./ssh-shared/etc:/root/external-etc:rw  # we can't mount pass-files directly
-      - ./ssh-shared/home:/home:rw
+      - ./ssh-server/shared/entrypoint.sh:/entrypoint.sh:ro
+      - ./ssh-server/shared/etc/ssh/sshd_config:/etc/ssh/sshd_config:ro
+      - ./ssh-server/shared/etc:/root/external-etc:rw  # we can't mount pass-files directly
+      - ./ssh-server/shared/home:/home:rw
     ports:
       - 0.0.0.0:443:443
     restart: on-failure:3
@@ -15,7 +15,7 @@ services:
   mtproto-proxy:
     image: telegrammessenger/proxy:latest
     volumes:
-      - ./mtproto-shared:/data:rw
+      - ./mtproto-proxy:/data:rw
     environment:
       TAG: ${MTPROTO_TAG:-}
       SECRET: ${MTPROTO_SECRET:-}  # for mtg-version use 'dd'-prefix to turn on obfuscation mode
@@ -30,7 +30,7 @@ services:
   telemt-proxy:
     image: ghcr.io/telemt/telemt:latest
     volumes:
-      - ./telemt-shared/config.toml:/app/config.toml:ro
+      - ./telemt-proxy/config.toml:/app/config.toml:ro
     tmpfs:
       - /run/telemt:rw,mode=1777,size=1m
     environment:
@@ -44,7 +44,7 @@ services:
   # mtg-proxy:  # supports only FakeTLS mode (ee-secret)
   #   image: nineseconds/mtg:2
   #   volumes:
-  #     - ./mtg-shared/config.toml:/config.toml:ro
+  #     - ./mtg-proxy/config.toml:/config.toml:ro
   #   ports:
   #     - 0.0.0.0:4431:3128
   #     # - 127.0.0.1:9091:3129  # stats:> curl -s localhost:9091 | grep '^mtg_domain_fronting'

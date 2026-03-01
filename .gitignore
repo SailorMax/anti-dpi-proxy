@@ -16,15 +16,15 @@
 /scripts/tools/ext_proxies_list.txt
 
 # servers
-/**/ssh-proxy/remote-server/ssh-shared/etc/passwd
-/**/ssh-proxy/remote-server/ssh-shared/etc/passwd.prev
-/**/ssh-proxy/remote-server/ssh-shared/etc/shadow
-/**/ssh-proxy/remote-server/ssh-shared/etc/shadow.prev
-/**/ssh-proxy/remote-server/ssh-shared/etc/ssh/ssh_host_*_key*
+/**/ssh-proxy/remote-server/ssh-server/shared/etc/passwd
+/**/ssh-proxy/remote-server/ssh-server/shared/etc/passwd.prev
+/**/ssh-proxy/remote-server/ssh-server/shared/etc/shadow
+/**/ssh-proxy/remote-server/ssh-server/shared/etc/shadow.prev
+/**/ssh-proxy/remote-server/ssh-server/shared/etc/ssh/ssh_host_*_key*
 /**/ssh-proxy/remote-server/**/id_*
 /**/ssh-proxy/remote-server/**/authorized_keys
-/**/ssh-proxy/remote-server/telemt-shared/config.toml
-/**/ssh-proxy/remote-server/mtg-shared/config.toml
+/**/ssh-proxy/remote-server/telemt-proxy/config.toml
+/**/ssh-proxy/remote-server/mtg-proxy/config.toml
 
-/**/ssh-proxy/remote-server/mtproto-shared/**/*
-!/**/ssh-proxy/remote-server/mtproto-shared/.gitkeep
+/**/ssh-proxy/remote-server/mtproto-proxy/**/*
+!/**/ssh-proxy/remote-server/mtproto-proxy/.gitkeep

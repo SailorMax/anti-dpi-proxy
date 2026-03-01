@@ -27,12 +27,6 @@ services:
     # entrypoint: [ "/bin/sh", "-c" ]
     # command: "sed -i '/^exec.*\\/mtproto-proxy/{/$$@/!s/$/ \"$$@\"/}' /run.sh; /run.sh --http-stats"
 
-  # mtg-proxy:  # require setup for specifi server :(
-  #   image: nineseconds/mtg:2
-  #   ports:
-  #     - 0.0.0.0:4430:443  # proxy port (:2398/stats only from localhost)
-  #   restart: on-failure:3
-
   telemt-proxy:
     image: ghcr.io/telemt/telemt:latest
     volumes:
@@ -43,6 +37,15 @@ services:
       RUST_LOG: normal
     ports:
       - 0.0.0.0:4430:443
-      - 127.0.0.1:9090:9090  # metrics (curl -s localhost:9090/metrics | grep '^telemt_user_unique_ips_')
+      - 127.0.0.1:9090:9090  # metrics:> curl -s localhost:9090/metrics | grep '^telemt_user_unique_ips_'
     restart: on-failure:3
     stop_signal: SIGKILL
+
+  # mtg-proxy:  # supports only FakeTLS mode (ee-secret)
+  #   image: nineseconds/mtg:2
+  #   volumes:
+  #     - ./mtg-shared/config.toml:/config.toml:ro
+  #   ports:
+  #     - 0.0.0.0:4431:3128
+  #     # - 127.0.0.1:9091:3129  # stats:> curl -s localhost:9091 | grep '^mtg_domain_fronting'
+  #   restart: on-failure:3

@@ -24,6 +24,7 @@
 /**/ssh-proxy/remote-server/**/id_*
 /**/ssh-proxy/remote-server/**/authorized_keys
 /**/ssh-proxy/remote-server/telemt-shared/config.toml
+/**/ssh-proxy/remote-server/mtg-shared/config.toml
 
 /**/ssh-proxy/remote-server/mtproto-shared/**/*
 !/**/ssh-proxy/remote-server/mtproto-shared/.gitkeep

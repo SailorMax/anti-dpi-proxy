@@ -1,0 +1,22 @@
+debug = true
+
+#> echo "ee$(openssl rand -hex 38)"
+secret = "ee0000000000000000000000000000000000000000000000000000000000000000000000000000"
+
+# Host:port pair to run proxy on.
+bind-to = "0.0.0.0:3128"
+
+prefer-ip = "prefer-ipv6"
+
+[network]
+dns = "https://9.9.9.9"
+
+proxies = [
+    # "socks5://user:password@host:port"
+]
+
+[stats.prometheus]
+enabled = false
+bind-to = "0.0.0.0:3129"  # (!)only for docker. Outside it has to be 127.0.0.1
+http-path = "/"
+metric-prefix = "mtg"

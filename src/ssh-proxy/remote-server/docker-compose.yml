@@ -37,7 +37,7 @@ services:
       RUST_LOG: normal
     ports:
       - 0.0.0.0:4430:443
-      - 127.0.0.1:9090:9090  # metrics:> curl -s localhost:9090/metrics | grep '^telemt_user_unique_ips_'
+      - 127.0.0.1:9090:9090  # metrics:> curl -s localhost:9090/metrics | grep '^telemt_user_'
     restart: on-failure:3
     stop_signal: SIGKILL
 

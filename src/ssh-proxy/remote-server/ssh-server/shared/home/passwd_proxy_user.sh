@@ -7,7 +7,7 @@ fi
 
 passwd $1
 
-EXT_SHADOW_PATH="/root/external/shadow"
+EXT_SHADOW_PATH="/root/external-etc/shadow"
 mv -f ${EXT_SHADOW_PATH} ${EXT_SHADOW_PATH}.prev
 cp /etc/shadow ${EXT_SHADOW_PATH}
 

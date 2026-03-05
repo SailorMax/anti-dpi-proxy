@@ -34,8 +34,8 @@ else
 	echo "Stdin is empty => ~/.ssh/authorized_keys is empty."
 fi
 
-EXT_PASSWD_PATH="/root/external/passwd"
-EXT_SHADOW_PATH="/root/external/shadow"
+EXT_PASSWD_PATH="/root/external-etc/passwd"
+EXT_SHADOW_PATH="/root/external-etc/shadow"
 mv -f ${EXT_PASSWD_PATH} ${EXT_PASSWD_PATH}.prev
 cp /etc/passwd ${EXT_PASSWD_PATH}
 mv -f ${EXT_SHADOW_PATH} ${EXT_SHADOW_PATH}.prev

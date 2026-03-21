@@ -49,3 +49,17 @@ services:
   #     - 0.0.0.0:4431:3128
   #     # - 127.0.0.1:9091:3129  # stats:> curl -s localhost:9091 | grep '^mtg_domain_fronting'
   #   restart: on-failure:3
+
+  # test VPN
+  # amnesiawg:
+  #   build: ./amnesiawg
+  #   # volumes:
+  #   #   - /opt/amneziawg:/etc/amnezia:rw
+  #   devices:
+  #     - /dev/net/tun:/dev/net/tun
+  #   cap_add:
+  #     - NET_ADMIN
+  #   ports:
+  #     # - 0.0.0.0:44344:51820/udp
+  #     - 0.0.0.0:44344:58083/udp
+  #   restart: on-failure:3

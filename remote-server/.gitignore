@@ -1,0 +1,15 @@
+.env
+
+# servers
+ssh-server/shared/etc/passwd
+ssh-server/shared/etc/passwd.prev
+ssh-server/shared/etc/shadow
+ssh-server/shared/etc/shadow.prev
+ssh-server/shared/etc/ssh/ssh_host_*_key*
+**/id_*
+**/authorized_keys
+telemt-proxy/config.toml
+mtg-proxy/config.toml
+
+mtproto-proxy/**/*
+!mtproto-proxy/.gitkeep

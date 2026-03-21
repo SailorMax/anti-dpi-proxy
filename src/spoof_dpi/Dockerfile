@@ -4,7 +4,7 @@ WORKDIR /go
 # sometimes image has not required certificates :/ => use http
 RUN sed -i 's|https://|http://|g' /etc/apk/repositories \
 	&& apk update && apk add ca-certificates \
-	&& go install -ldflags '-w -s -extldflags "-static"' -tags timetzdata github.com/xvzc/SpoofDPI/cmd/spoofdpi@latest
+	&& go install -ldflags '-w -s -extldflags "-static"' -v -tags timetzdata github.com/xvzc/SpoofDPI/cmd/spoofdpi@latest
 
 FROM busybox:stable-musl
 WORKDIR /

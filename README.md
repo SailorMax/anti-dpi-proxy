@@ -2,8 +2,8 @@ Anti DPI ([Deep packet inspection](https://en.wikipedia.org/wiki/Deep_packet_ins
 
 The solution use [PAC](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file)-file to control proxy domains, DNS-over-HTTPS and make up docker containers:
 1. http-server (port 8082) for access to config(PAC) file via http-protocol (Windows [doesn't support](https://learn.microsoft.com/en-us/previous-versions/troubleshoot/browsers/administration/cannot-read-pac-file) local files)
-2. dpi-socks5-proxy (port 1080) based on [Bypass DPI](https://github.com/hufrea/byedpi)-solution
-3. or dpi-http-proxy (port 8888) based on [Spoof DPI](https://github.com/xvzc/SpoofDPI)-solution
+2. adpi-socks5-proxy (port 1080) based on [Bypass DPI](https://github.com/hufrea/byedpi)-solution
+3. or adpi-http-proxy (port 8888) based on [Spoof DPI](https://github.com/xvzc/SpoofDPI)-solution
 4. dns-proxy (port 53) based on [DNS Proxy](https://github.com/AdguardTeam/dnsproxy)-solution
 5. (optional) ext-proxy (port 3128) based on [Proxy-chain](https://github.com/apify/proxy-chain)-solution
 6. (optional) ssh-proxy (port 1081) to use remove ssh-server as proxy
@@ -22,7 +22,7 @@ All servers are only accessible for the local computer!
 2. internet
 
 ### Configuration files:
-1. `domains_for_dpi_proxy.txt` - list of domains and ip masks for dpi-proxies (packets modifier)
+1. `domains_for_dpi_proxy.txt` - list of domains and ip masks for adpi-proxies (packets modifier)
 2. `domains_for_ext_proxy.txt` - list of domains and ip masks for ext-proxies (external proxies)
 3. `ext_proxies.txt` - list of external proxies, which will be uses one by one in random order
 4. `ssh_proxy.conf` - configuration file to use external ssh-proxy (remote server solution you can find in ./src/ssh-proxy/remote-server/). Require setup REMOTE_HOST, REMOTE_PORT and REMOTE_USER + private/public keys in __conf/.ssh/__
@@ -35,7 +35,7 @@ All servers are only accessible for the local computer!
 3. (optional) setup your browser, system or application to use DNS server __127.0.0.1:53__
 
 ### Configuration hints:
-- `ttl` in dpi-config has to be limited by your provider servers (`tracert/traceroute google.com`)
+- `ttl` in adpi-config has to be limited by your provider servers (`tracert/traceroute google.com`)
 
 ### If it doesn't work:
 1. try to find better arguments for "Bypass DPI". Details: https://github.com/hufrea/byedpi/blob/main/readme.txt
@@ -43,6 +43,9 @@ All servers are only accessible for the local computer!
 3. in WSL possible require turn off [autoProxy](https://learn.microsoft.com/en-us/windows/wsl/wsl-config)
 4. In case if remote ssh-server change it's keys you need to remove ssh-proxy container to reset stored keys
 
+
+### How to update
+- `docker compose build --pull --no-cache [name_of_service]`
 
 ### Target solution schema
 ```mermaid

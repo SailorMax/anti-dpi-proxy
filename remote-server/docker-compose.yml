@@ -41,14 +41,14 @@ services:
     restart: on-failure:3
     stop_signal: SIGKILL
 
-  # mtg-proxy:  # supports only FakeTLS mode (ee-secret)
-  #   image: nineseconds/mtg:2
-  #   volumes:
-  #     - ./mtg-proxy/config.toml:/config.toml:ro
-  #   ports:
-  #     - 0.0.0.0:4431:3128
-  #     # - 127.0.0.1:9091:3129  # stats:> curl -s localhost:9091 | grep '^mtg_domain_fronting'
-  #   restart: on-failure:3
+  mtg-proxy:  # supports only FakeTLS mode (ee-secret)
+    image: nineseconds/mtg:2
+    volumes:
+      - ./mtg-proxy/config.toml:/config/config.toml:ro
+    ports:
+      - 0.0.0.0:4431:3128
+      # - 127.0.0.1:9091:3129  # stats:> curl -s localhost:9091 | grep '^mtg_domain_fronting'
+    restart: on-failure:3
 
   # test VPN
   # amnesiawg:

@@ -53,10 +53,11 @@ services:
     entrypoint: 'sh /opt/adp/ssh-proxy.sh'
     command: '-v'
 
-  dpi-http-proxy:
+  adpi-http-proxy:
     build: ./src/spoof_dpi/
     volumes:
       - ./scripts:/opt/adp:ro
+      - ./conf:/opt/adp-conf:ro
       - ./conf/spoofdpi.toml:/etc/spoofdpi.toml:ro
     depends_on:
       - dns-proxy
@@ -76,10 +77,11 @@ services:
   #     - 127.0.0.1:8888:8888
   #   command: '--addrs 0.0.0.0:8888 --dns-mode dot --dot-server 9.9.9.9 --log-level debug --https-clienthello-size 10'
 
-  dpi-socks5-proxy:
+  adpi-socks5-proxy:
     # image: tazihad/byedpi
     build: ./src/bye_dpi/
     volumes:
+      - ./conf:/opt/adp-conf:ro
       - ./scripts:/opt/adp:ro
     depends_on:
       - dns-proxy

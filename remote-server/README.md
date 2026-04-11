@@ -21,8 +21,15 @@ manual test:
 4. setup received tag into local .env-file as MTPROTO_TAG
 
 
-#### hints
-`cat ~/my-certificate.pub >> ~/.ssh/authorized_keys`
+### hints
+to access to server by certificate: 
+- `cat ~/my-certificate.pub >> ~/.ssh/authorized_keys`
 
-`ssh-keygen -t ed25519 -b 256` [-f ./id_ed25519]
-`ssh-keygen -t rsa -b 4096` [-f ./id_rsa4096]
+create optimal secure keys:
+- `ssh-keygen -t ed25519 -b 256` [-f ./id_ed25519]
+- `ssh-keygen -t rsa -b 4096` [-f ./id_rsa4096]
+
+monitor programs:
+- `htop`
+- `glances`
+- `btop`

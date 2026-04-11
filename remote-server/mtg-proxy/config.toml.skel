@@ -1,6 +1,8 @@
 debug = true
 
 #> echo "ee$(openssl rand -hex 38)"
+#> docker compose run -it mtg-proxy generate-secret --hex firefox.com
+# better use domain of you server: `nslookup server-ip`
 secret = "ee0000000000000000000000000000000000000000000000000000000000000000000000000000"
 
 # Host:port pair to run proxy on.

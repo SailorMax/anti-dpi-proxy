@@ -1,7 +1,7 @@
 # SSH-server:
-1. `adduser admin-username sudo` and test it (optionally put in /etc/sudoers.d/username string 'username ALL=(ALL) NOPASSWD: ALL')
-2. setup 'PermitRootLogin no' in /etc/ssh/sshd_config
-3. `apt install fail2ban docker.io docker-compose`
+1. `apt install sudo fail2ban docker.io docker-compose`
+2. `adduser admin-username sudo` and test it (optionally put in /etc/sudoers.d/username string 'username ALL=(ALL) NOPASSWD: ALL')
+3. setup 'PermitRootLogin no' in `/etc/ssh/sshd_config` or in `/etc/ssh/sshd_config.d/` (has to be latest command)
 4. `docker compose up`
 
 ## Setup client:
@@ -33,3 +33,6 @@ monitor programs:
 - `htop`
 - `glances`
 - `btop`
+
+restore from backup ssh-proxy users:
+- `chown uid:gid -R shared/home/[user]` (uid/gid stored in shared/etc/passwd)

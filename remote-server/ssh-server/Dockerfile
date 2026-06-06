@@ -1,5 +1,5 @@
-FROM alpine:latest
-RUN apk add --update openssh shadow
+FROM alpine:3.21
+RUN apk add openssh shadow
 
 COPY ./shared/home/setup_proxy_user.sh /home/
 COPY ./shared/home/passwd_proxy_user.sh /home/

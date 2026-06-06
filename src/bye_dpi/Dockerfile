@@ -1,4 +1,4 @@
-FROM alpine:latest AS builder
+FROM alpine:3.21 AS builder
 WORKDIR /app
 RUN apk add make gcc musl-dev linux-headers \
 	&& wget -O app.zip https://codeload.github.com/hufrea/byedpi/zip/refs/heads/main \
@@ -6,7 +6,7 @@ RUN apk add make gcc musl-dev linux-headers \
 	&& cd byedpi-main/ \
 	&& make
 
-#FROM alpine:latest
+#FROM alpine:3.21
 FROM busybox:stable-musl
 WORKDIR /
 COPY --from=builder /lib/ld-musl-* /lib/
